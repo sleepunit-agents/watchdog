@@ -178,3 +178,33 @@ poll; `it-wd-state` now states that multi-poll behavior composes by
 determinism and the corpus pins every single-poll transition.
 
 Corpus after rework: 3 items, 13 criteria, 14 fixtures.
+
+## Cold review round 2 — REWORK (2026-06-12)
+
+All 14 fixtures traced clean again; the findings moved up a level, to what
+the corpus as a whole fails to force:
+
+1. **CRITICAL — `status` vs `state` never separated.** Every fixture moved
+   the two fields together, so a `state=="blocked"`-keyed implementation
+   passed the entire corpus while violating the predicate's central choice.
+   *Fix:* `ac-wd-kind-filter` generalized to `ac-wd-predicate`; new fixture
+   `fx-status-vs-state` pins both directions (blocked-but-working: not
+   tracked, stale entry removed; waiting-but-running: alerts). Body states
+   status is authoritative in both directions.
+2. **MAJOR — totality over non-object payload elements unfixtured**
+   (`null.sessionId` is the canonical crash). *Fix:* `fx-ignored` now mixes
+   `null` and a bare string with the malformed objects; `it-wd-input` body
+   covers non-object elements explicitly.
+3. **MAJOR — invalid `thresholdSeconds` undefined.** *Fix:* config now
+   shares the totality stance — any value that is not a non-negative
+   integer is treated as absent (default applies); new fixture
+   `fx-config-invalid` pins `thresholdSeconds: null` at 1799s (also covers
+   the config-present under-threshold path, nit 5c).
+4. **NIT — code-point vs UTF-16 code-unit sort.** Body now notes ids are
+   compared as opaque strings and the CLI's ids are ASCII UUIDs, where
+   every common comparison agrees.
+5. **NIT — coverage thinness.** `fx-order` extended to three sessions with
+   payload order and time order both differing from id order; `fx-flag`
+   moved to the exact explicit-threshold boundary (600s against 600s).
+
+Corpus after round 2: 3 items, 13 criteria, 16 fixtures.
