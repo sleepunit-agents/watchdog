@@ -1,0 +1,21 @@
+{
+  "name": "watchdog",
+  "version": "0.1.0",
+  "description": "Stuck-session watchdog — pure check core + poller binding; conforms to spec/watchdog-core (felag interchange)",
+  "type": "module",
+  "license": "Apache-2.0",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "self-verify": "tsx scripts/self-verify.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

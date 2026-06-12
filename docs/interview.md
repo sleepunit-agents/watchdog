@@ -146,5 +146,35 @@ preconditions are the divergence class felag exists to eliminate.
 
 ## Budgets
 
-`it-wd-check`: 7 criteria (at the cap, not over). `it-wd-state`: 3.
-`validateAuthorOutput` accepts with default budgets.
+`it-wd-check`: 7 criteria (at the cap, not over). `it-wd-input`: 2.
+`it-wd-state`: 4. `validateAuthorOutput` accepts with default budgets.
+
+## Cold review round 1 — REWORK (2026-06-12)
+
+The context-stripped reviewer traced all 11 fixtures clean (every expected
+value forced by the bodies), then found three blockers, all the same defect
+class: prose commitments with no fixture carrying them.
+
+1. **Create-and-alert sequencing was unfixtured.** Every alerting fixture
+   pre-seeded `firstSeenWaiting`; a load-prior-state→compute→write
+   implementation would never alert on the creation poll and would pass the
+   whole corpus. *Fix:* evaluation order made explicit in `it-wd-check`
+   (entry resolution precedes alert evaluation), new criterion
+   `ac-wd-same-poll` + fixture `fx-zero-threshold` (thresholdSeconds 0,
+   empty state, alert fires on the creation poll).
+2. **"Records lacking sessionId are ignored" was prose-only.** *Fix:* new
+   item `it-wd-input` (payload hygiene), criterion `ac-wd-ignored-records` +
+   fixture `fx-ignored` — also resolves the wrong-typed-sessionId nit:
+   absent **or non-string** sessionId is ignored, and the fixture carries a
+   numeric-sessionId record.
+3. **Duplicate-sessionId last-wins was prose-only.** *Fix:* criterion
+   `ac-wd-dup-last-wins` + fixture `fx-dup` (two records share a sessionId,
+   the alert carries the last verbatim) — `fx-dup` uses `config: {}`, which
+   also pins the default-when-key-absent path (review nit 5) and is
+   cross-referenced from `ac-wd-default-threshold`.
+
+Nit 6 (re-episode cycle only piecewise): structural — the wire format is one
+poll; `it-wd-state` now states that multi-poll behavior composes by
+determinism and the corpus pins every single-poll transition.
+
+Corpus after rework: 3 items, 13 criteria, 14 fixtures.
