@@ -281,3 +281,22 @@ config (`typeof [] === 'object'`, the structurally distinct non-object) also
 pinned: `fx-cfg-array`. The fractional residue accepted as disclosed.
 
 Corpus after round 6: 3 items, 13 criteria, 25 fixtures.
+
+## Cold review round 7 — MERGE (2026-06-12)
+
+All 25 traced clean; **"No prose commitment is left uncarried… This spec has
+been hardened well."** Verdict MERGE with five nits. Two named a tempting
+wrong implementation and were folded before the gate: `fx-empty-sessionid`
+(an empty string is a present string — tracked under `""`; a
+truthiness-guarded implementation diverges) and `fx-cfg-number` (a bare
+numeric config is not the threshold). The remaining three are accepted as
+disclosed: the fractional residue (art-ubo.4), `ac-wd-flag`'s
+strictly-greater case covered transitively, and multi-poll composition
+prose-only by design of the single-poll wire format.
+
+**Final corpus: 3 items, 13 criteria, 27 fixtures.** Seven rounds, verdicts
+REWORK×6 → MERGE. Every blocker across all rounds was one defect class:
+a normative commitment stated in prose without a fixture carrying it — and
+in three rounds the unfixtured prose was prose added the round before. The
+working rule this ceremony confirms: *the round you write the sentence is
+the round you write the fixture.*
