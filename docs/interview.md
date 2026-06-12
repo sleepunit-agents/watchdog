@@ -253,3 +253,19 @@ sessions and config). Fractional thresholdSeconds stays prose-only by
 construction (art-ubo.4).
 
 Corpus after round 4: 3 items, 13 criteria, 21 fixtures.
+
+## Cold review round 5 — REWORK (2026-06-12)
+
+All 21 traced clean; the two MAJORs were the last unfixtured totality
+claims: non-object `config` (config=null/scalar/array — the sessions
+surface had `fx-ignored`, config had nothing) and the float-integer /
+fractional `thresholdSeconds` distinction. Fixes: `fx-cfg-null` (config
+null, suppression side) and `fx-cfg-scalar` (config a bare string, alert
+side at the default boundary); the fractional/float-integer residue is now
+a formal preamble exclusion documenting *precisely* why it is structurally
+unfixturable (felag CS6 + ECMAScript numeric collapse → the lexeme cannot
+survive the corpus; art-ubo.4) with a MUST for lexeme-preserving readers.
+Nits: boolean added to the invalid-thresholdSeconds enumeration;
+structural (key-order-independent) equality stated in `it-wd-state`.
+
+Corpus after round 5: 3 items, 13 criteria, 23 fixtures.
