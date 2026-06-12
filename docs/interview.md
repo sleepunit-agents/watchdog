@@ -208,3 +208,29 @@ the corpus as a whole fails to force:
    moved to the exact explicit-threshold boundary (600s against 600s).
 
 Corpus after round 2: 3 items, 13 criteria, 16 fixtures.
+
+## Cold review round 3 — REWORK (2026-06-12)
+
+All 16 traced clean; two MAJORs on unfixtured branches with tempting wrong
+implementations:
+
+1. **Invalid `thresholdSeconds` under-fixtured** — only `null` was pinned;
+   negative (`-5` → a non-validating implementation alerts *everything*
+   immediately) and string (`"600"` → a coercing implementation runs at
+   600s) passed the corpus. *Fix:* `fx-config-negative`, `fx-config-string`.
+   The **fractional case is unfixturable**: felag CS6 forbids non-integer
+   numerals anywhere in a canonical fixture line, so the adversarial input
+   `600.5` cannot be serialized. Ceded in the body with the reason; filed
+   against felag as **art-ubo.4** — the ceremony's first substrate finding.
+2. **`dup-last-wins` not discriminated when the last duplicate is quiet** —
+   `fx-dup` had both records waiting, so "last wins" vs "any-waiting wins"
+   were indistinguishable. *Fix:* `fx-dup-last-quiet` (first waiting, last
+   working → not tracked, entry removed).
+
+Nits: `fx-interactive` description referenced the renamed criterion (fixed);
+multi-poll composition now has a worked six-poll example in `it-wd-state`;
+clock skew pinned in body (negative age cannot alert, never re-stamped);
+"non-negative integer" defined as value-not-lexeme; non-ASCII alert ordering
+and nonconforming state input moved to explicit preamble exclusions.
+
+Corpus after round 3: 3 items, 13 criteria, 19 fixtures.
