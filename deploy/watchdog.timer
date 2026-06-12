@@ -1,0 +1,12 @@
+[Unit]
+Description=Timer for stuck-session watchdog (every 5 min, staggered off :00)
+
+[Timer]
+# Minutes 4,9,14,… local time (box TZ America/Chicago) — staggered off :00/:30
+# per ops convention. 5-min poll + 1800s default threshold = detection within
+# ~30-35 min of a session getting stuck.
+OnCalendar=*:4/5
+Persistent=false
+
+[Install]
+WantedBy=timers.target

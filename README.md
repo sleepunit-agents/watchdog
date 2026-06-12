@@ -25,6 +25,26 @@ stuck episode.
 deterministic, fixturable. Polling schedule, alert delivery/formatting, and
 remediation are binding surface, excluded from core.
 
+## Implementation (watchdog-impl)
+
+- [src/check.ts](src/check.ts) — the pure core; `npm test` runs the fixture
+  corpus as the test suite (felag-ts harness pattern).
+- [src/poller.ts](src/poller.ts) — the binding: `claude agents --json` →
+  `check` → Discord webhook → atomic state write. Env:
+  `DISCORD_WEBHOOK_URL`, `WATCHDOG_STATE_FILE`,
+  `WATCHDOG_THRESHOLD_SECONDS`, `CLAUDE_BIN` (absolute paths under systemd).
+  Delivery policy: `alertedAt` persists only for alerts Discord accepted; a
+  failed delivery rolls it back (retry next poll) and exits non-zero so
+  OnFailure alerting sees the watchdog itself fail.
+- [deploy/](deploy/) — systemd user units (oneshot service + 5-min timer,
+  staggered off :00; `KillMode=process` so cgroup cleanup never reaches the
+  shared claude background host). `EnvironmentFile=~/.config/watchdog/env`
+  (not committed: carries the webhook).
+- `npm run self-verify` — runs every fixture through the implementation,
+  emits VerificationRecords (with `fixtureHash`), ingest-checks them, and
+  derives the verdict via `felag verify`. Ledger committed under
+  [verification/](verification/).
+
 ## Lineage
 
 First greenfield run of the full felag loop (art-ubo.3): prime → interview →

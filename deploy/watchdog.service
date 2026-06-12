@@ -1,0 +1,15 @@
+# Stuck-session watchdog — one poll per activation (timer-driven).
+# The watchdog itself exits non-zero on acquisition or delivery failure,
+# so OnFailure alerting (art-bbw) covers the watcher too.
+[Unit]
+Description=Stuck-session watchdog: flag background claude sessions blocked on prompts
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/Code/watchdog
+# node is mise-managed on one; systemd user units don't see the shell PATH.
+ExecStart=%h/.local/share/mise/installs/node/24.9.0/bin/node %h/Code/watchdog/dist/poller.js
+EnvironmentFile=%h/.config/watchdog/env
+# The poller spawns `claude agents --json`, which talks to the shared
+# background host; never let cgroup cleanup reach beyond our own process.
+KillMode=process
