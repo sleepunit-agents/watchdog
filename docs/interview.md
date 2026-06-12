@@ -269,3 +269,15 @@ Nits: boolean added to the invalid-thresholdSeconds enumeration;
 structural (key-order-independent) equality stated in `it-wd-state`.
 
 Corpus after round 5: 3 items, 13 criteria, 23 fixtures.
+
+## Cold review round 6 — REWORK (2026-06-12)
+
+All 23 traced clean; one MAJOR left, the sharpest small find of the series:
+boolean `thresholdSeconds` was enumerated as invalid but appeared in neither
+the fixtured nor the unfixturable list — and it is fixturable. A
+type-enumerating validator that forgets booleans computes `true*1000 = 1
+second` and alerts a 700s-old session. *Fix:* `fx-config-boolean`. Array
+config (`typeof [] === 'object'`, the structurally distinct non-object) also
+pinned: `fx-cfg-array`. The fractional residue accepted as disclosed.
+
+Corpus after round 6: 3 items, 13 criteria, 25 fixtures.
