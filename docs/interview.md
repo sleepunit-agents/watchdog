@@ -234,3 +234,22 @@ clock skew pinned in body (negative age cannot alert, never re-stamped);
 and nonconforming state input moved to explicit preamble exclusions.
 
 Corpus after round 3: 3 items, 13 criteria, 19 fixtures.
+
+## Cold review round 4 — REWORK (2026-06-12)
+
+All 19 traced clean ("the discrimination design is genuinely good"); one
+MAJOR: the clock-skew commitment I added in round 3 prose had no fixture —
+a sanitize-future-timestamps implementation passed everything and diverges
+visibly at threshold 0. The recurring lesson, now thrice: **the round you
+add prose is the round you must add its fixture.**
+
+Fixes: `fx-clock-skew` (future firstSeenWaiting at threshold 0 — no alert,
+timestamp retained verbatim; bound to `ac-wd-under-threshold`, whose Gherkin
+now names the branch); `fx-config-null-at` (the alert side of the
+invalid-config branch at the 1800s boundary); `fx-ignored` extended with an
+array element and a null sessionId; `now` and `state` declared trusted
+caller preconditions in the body (totality covers the external surfaces,
+sessions and config). Fractional thresholdSeconds stays prose-only by
+construction (art-ubo.4).
+
+Corpus after round 4: 3 items, 13 criteria, 21 fixtures.
