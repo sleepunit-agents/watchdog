@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Stuck-session watchdog — pure check core + poller binding; conforms to spec/watchdog-core (felag interchange)",
   "type": "module",
-  "license": "Apache-2.0",
+  "license": "AGPL-3.0-only",
   "exports": {
     ".": "./dist/index.js"
   },
